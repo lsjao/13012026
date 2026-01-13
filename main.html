@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! 🎂</title>
+    <style>
+        /* ============================================
+           EDIT YOUR COLORS HERE
+           ============================================ */
+        :root {
+            --bg-color: #1a1a2e;
+            --bg-pattern: #16213e;
+            --primary-color: #0f4c81;
+            --accent-color: #3a86ff;
+            --secondary-color: #5a9fd4;
+            --text-color: #e6f2ff;
+            --button-shadow: #0a3d6b;
+            --icon-color: #ffb703;
+        }
+
+        /* ============================================
+           BASIC RESET & LAYOUT
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--bg-color);
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    var(--bg-pattern) 2px,
+                    var(--bg-pattern) 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    var(--bg-pattern) 2px,
+                    var(--bg-pattern) 4px
+                ),
+                linear-gradient(
+                    135deg,
+                    var(--bg-color) 0%,
+                    #0f1419 100%
+                );
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            image-rendering: pixelated;
+        }
+
+        /* ============================================
+           PIXEL FONT STYLING
+           ============================================ */
+        .pixel-text {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            image-rendering: pixelated;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeSpeed;
+            text-shadow: 
+                2px 0 0 var(--accent-color),
+                -2px 0 0 var(--accent-color),
+                0 2px 0 var(--accent-color),
+                0 -2px 0 var(--accent-color),
+                3px 3px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* ============================================
+           MAIN CONTAINER
+           ============================================ */
+        main {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* ============================================
+           PIXEL BUTTON STYLING
+           ============================================ */
+        .pixel-button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: 4px solid var(--accent-color);
+            padding: 20px 40px;
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.1s;
+            box-shadow: 
+                0 8px 0 var(--button-shadow),
+                0 8px 0 4px var(--accent-color);
+        }
+
+        .pixel-button:hover {
+            transform: translateY(2px);
+            background-color: var(--accent-color);
+            box-shadow: 
+                0 6px 0 var(--button-shadow),
+                0 6px 0 4px var(--accent-color);
+        }
+
+        .pixel-button:active {
+            transform: translateY(4px);
+            box-shadow: 
+                0 4px 0 var(--button-shadow),
+                0 4px 0 4px var(--accent-color);
+        }
+
+        .pixel-button:focus {
+            outline: 4px dashed var(--icon-color);
+            outline-offset: 8px;
+        }
+
+        .pixel-button.hidden {
+            display: none;
+        }
+
+        /* ============================================
+           BIRTHDAY MESSAGE STYLING
+           ============================================ */
+        .birthday-message {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            pointer-events: none;
+        }
+
+        .birthday-message.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .birthday-message h1 {
+            font-size: clamp(32px, 6vw, 56px);
+            margin-bottom: 30px;
+            animation: bounce 0.6s ease;
+            line-height: 1.4;
+        }
+
+        .birthday-message .name {
+            color: var(--icon-color);
+            font-size: clamp(40px, 8vw, 72px);
+            display: inline-block;
+            animation: bounce 0.6s ease 0.2s backwards;
+        }
+
+        .birthday-message p {
+            font-size: clamp(18px, 4vw, 24px);
+            line-height: 1.6;
+            margin: 30px auto;
+            max-width: 90%;
+            animation: fadeIn 0.8s ease 0.4s backwards;
+        }
+
+        /* ============================================
+           PIXEL STAR ANIMATION
+           ============================================ */
+        .star {
+            position: fixed;
+            font-size: 30px;
+            animation: float 3s ease-in forwards;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-500px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ============================================
+           8-BIT PIXEL ART ICONS
+           ============================================ */
+        .pixel-icon {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            image-rendering: pixelated;
+            opacity: 0.6;
+            animation: floatIcons 4s ease-in-out infinite;
+        }
+
+        @keyframes floatIcons {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Computer Icon */
+        .icon-computer {
+            background: 
+                linear-gradient(var(--secondary-color) 0 0) 15px 10px / 30px 20px,
+                linear-gradient(var(--secondary-color) 0 0) 20px 30px / 20px 5px,
+                linear-gradient(var(--icon-color) 0 0) 20px 15px / 20px 10px,
+                linear-gradient(var(--accent-color) 0 0) 10px 35px / 40px 10px,
+                linear-gradient(var(--accent-color) 0 0) 25px 45px / 10px 5px;
+            background-repeat: no-repeat;
+        }
+
+        /* Trophy Icon */
+        .icon-trophy {
+            background: 
+                linear-gradient(var(--icon-color) 0 0) 20px 10px / 20px 15px,
+                linear-gradient(var(--icon-color) 0 0) 10px 15px / 10px 10px,
+                linear-gradient(var(--icon-color) 0 0) 40px 15px / 10px 10px,
+                linear-gradient(var(--icon-color) 0 0) 25px 25px / 10px 15px,
+                linear-gradient(var(--accent-color) 0 0) 20px 40px / 20px 5px,
+                linear-gradient(var(--accent-color) 0 0) 15px 45px / 30px 5px;
+            background-repeat: no-repeat;
+        }
+
+        /* Briefcase Icon */
+        .icon-briefcase {
+            background: 
+                linear-gradient(var(--accent-color) 0 0) 10px 20px / 40px 25px,
+                linear-gradient(var(--secondary-color) 0 0) 20px 15px / 20px 5px,
+                linear-gradient(var(--icon-color) 0 0) 28px 30px / 4px 10px;
+            background-repeat: no-repeat;
+        }
+
+        /* Star Icon */
+        .icon-star {
+            background: 
+                linear-gradient(var(--icon-color) 0 0) 25px 10px / 10px 10px,
+                linear-gradient(var(--icon-color) 0 0) 20px 20px / 20px 15px,
+                linear-gradient(var(--icon-color) 0 0) 10px 35px / 15px 10px,
+                linear-gradient(var(--icon-color) 0 0) 35px 35px / 15px 10px,
+                linear-gradient(var(--icon-color) 0 0) 25px 45px / 10px 10px;
+            background-repeat: no-repeat;
+        }
+
+        /* Rocket Icon */
+        .icon-rocket {
+            background: 
+                linear-gradient(var(--accent-color) 0 0) 25px 5px / 10px 35px,
+                linear-gradient(var(--secondary-color) 0 0) 15px 15px / 10px 10px,
+                linear-gradient(var(--secondary-color) 0 0) 35px 15px / 10px 10px,
+                linear-gradient(var(--icon-color) 0 0) 20px 40px / 8px 15px,
+                linear-gradient(var(--icon-color) 0 0) 32px 40px / 8px 15px,
+                linear-gradient(var(--icon-color) 0 0) 28px 10px / 4px 4px;
+            background-repeat: no-repeat;
+        }
+
+        /* Gear Icon */
+        .icon-gear {
+            background: 
+                linear-gradient(var(--secondary-color) 0 0) 20px 20px / 20px 20px,
+                linear-gradient(var(--accent-color) 0 0) 25px 10px / 10px 10px,
+                linear-gradient(var(--accent-color) 0 0) 25px 40px / 10px 10px,
+                linear-gradient(var(--accent-color) 0 0) 10px 25px / 10px 10px,
+                linear-gradient(var(--accent-color) 0 0) 40px 25px / 10px 10px,
+                linear-gradient(var(--icon-color) 0 0) 25px 25px / 10px 10px;
+            background-repeat: no-repeat;
+        }
+
+        /* Icon Positions */
+        .pixel-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .pixel-icon:nth-child(2) { top: 15%; right: 12%; animation-delay: 0.5s; }
+        .pixel-icon:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 1s; }
+        .pixel-icon:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 1.5s; }
+        .pixel-icon:nth-child(5) { top: 50%; left: 8%; animation-delay: 2s; }
+        .pixel-icon:nth-child(6) { top: 55%; right: 8%; animation-delay: 2.5s; }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 600px) {
+            .pixel-button {
+                padding: 16px 32px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background 8-bit icons -->
+    <div class="pixel-icon icon-computer"></div>
+    <div class="pixel-icon icon-trophy"></div>
+    <div class="pixel-icon icon-briefcase"></div>
+    <div class="pixel-icon icon-star"></div>
+    <div class="pixel-icon icon-rocket"></div>
+    <div class="pixel-icon icon-gear"></div>
+
+    <main>
+        <!-- Initial Button -->
+        <button id="startButton" class="pixel-button pixel-text" aria-label="Click to reveal birthday message">
+            Click Here
+        </button>
+
+        <!-- Birthday Message (hidden initially) -->
+        <div id="birthdayMessage" class="birthday-message pixel-text" role="region" aria-live="polite">
+            <!-- ============================================
+                 EDIT YOUR MESSAGE HERE
+                 ============================================ -->
+            <h1> Happy Birthday, <span class="name"> Aldrin! 🎉</span> </h1>
+            <p>
+                We're super glad you're part of the Abacus team. Thanks for bringing your energy, ideas, and good vibes to the team these past months. Wishing you a birthday full of laughs, chill moments, and all the wins you deserve. 🚀✨
+            </p>
+            <!-- ============================================
+                 END OF EDITABLE MESSAGE
+                 ============================================ -->
+        </div>
+    </main>
+
+    <script>
+        // ============================================
+        // BIRTHDAY GREETING SCRIPT
+        // ============================================
+
+        const startButton = document.getElementById('startButton');
+        const birthdayMessage = document.getElementById('birthdayMessage');
+
+        // Create pixel stars when button is clicked
+        function createStar(x, y) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.innerHTML = '⭐';
+            star.style.left = x + 'px';
+            star.style.top = y + 'px';
+            
+            // Random slight offset for variety
+            const offset = (Math.random() - 0.5) * 100;
+            star.style.transform = `translateX(${offset}px)`;
+            
+            document.body.appendChild(star);
+            
+            // Remove star after animation completes
+            setTimeout(() => {
+                star.remove();
+            }, 3000);
+        }
+
+        // Button click handler
+        startButton.addEventListener('click', function(e) {
+            // Create multiple stars
+            const rect = startButton.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // Create 8 stars with slight delays
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    createStar(
+                        centerX + (Math.random() - 0.5) * 100,
+                        centerY + (Math.random() - 0.5) * 50
+                    );
+                }, i * 100);
+            }
+            
+            // Hide button and show message
+            setTimeout(() => {
+                startButton.classList.add('hidden');
+                birthdayMessage.classList.add('show');
+            }, 300);
+        });
+
+        // Keyboard accessibility
+        startButton.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                startButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
